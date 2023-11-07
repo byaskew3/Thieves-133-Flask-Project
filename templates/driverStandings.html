@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="../static/styles/driverStandings.css">
+{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        <div class="mb-3">
+          <label for="yearLabel" class="form-label">Enter Year: </label>
+          <input type="text" class="form-control" id="yearLabel" name="year">
+        </div>
+        <div class="mb-3">
+          <label for="roundLabel" class="form-label">Enter Round: </label>
+          <input type="text" class="form-control" id="roundLabel" name="rnd">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Driver</th>
+          <th scope="col">Team</th>
+          <th scope="col">Wins</th>
+          <th scope="col">DOB</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for driver in all_drivers %}
+          <tr>
+            <th scope="row">{{ driver['first_name'] + ' ' + driver['last_name'] }}</th>
+            <td>{{ driver['team'] }}</td>
+            <td>{{ driver['wins'] }}</td>
+            <td>{{ driver['DOB'] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}
