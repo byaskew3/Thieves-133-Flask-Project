@@ -1,7 +1,7 @@
 from flask import request, render_template
 import requests
 from app import app
-from app.forms import LoginForm
+from app.forms import LoginForm, SignupForm
 
 # Home
 @app.route('/')
@@ -30,6 +30,24 @@ def login():
             return 'Invalid email or password'
     else:
         return render_template('login.html', form=form)
+
+# Signup
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = SignupForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        full_name = f'{form.first_name.data} {form.last_name.data}'
+        email = form.email.data
+        password = form.password.data
+        
+        REGISTERED_USERS[email] = {
+            'name': full_name,
+            'password': password
+        }
+
+        return f'Thank you for signing up {full_name}!'
+    else:
+        return render_template('signup.html', form=form)
 
 # F1
 @app.route('/f1/driverStandings', methods=['GET', 'POST'])
