@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="../static/styles/login.css">
+{% endblock %}
+
+{% block content %}
+    <img class="mx-auto d-block" src="https://media.licdn.com/dms/image/C560BAQHOfmVNdT_UUg/company-logo_200_200/0/1674482435894/coding_temple_logo?e=2147483647&v=beta&t=L0pNN94Ypk-kxsiCnJhegp6Nahjm3q2qO3OID_rOOlQ" alt="Coding Temple Logo">
+    <h1 class="text-center">Update your Post!</h1>
+    <form method="POST" class="w-25 mx-auto shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            {{ form.title(class="form-control cus-input", id="title", value=post.title) }}
+        </div>
+        <div class="mb-3">
+            <label for="caption" class="form-label">Caption</label>
+            {{ form.caption(class="form-control cus-input", id="caption", value=post.caption) }}
+        </div>
+        <div class="mb-3">
+          <label for="img-url" class="form-label">Image URL</label>
+          {{ form.img_url(class="form-control cus-input", id="img-url", value=post.img_url) }}
+        </div>
+        {{ form.submit_btn(class="btn btn-primary login-btn", value="Update Post") }}
+    </form>
+{% endblock %}
