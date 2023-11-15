@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Thieves Home Page
+{% endblock %}
+
+{% block content %}
+{% include './includes/nav.html' %}
+    <h1>Users!</h1>
+    {% for user in all_users %}
+    <div class="card w-50 m-auto">
+        <div class="card-body">
+          <h5 class="card-title">{{ user.first_name + " " + user.last_name}}</h5>
+          <p class="card-text">-user bio-</p>
+          {% if user in current_user.following %}
+          <a href="{{ url_for('main.unfollow', user_id=user.id) }}" class="btn btn-danger">Unfollow</a>
+          {% else %}
+          <a href="{{ url_for('main.follow', user_id=user.id) }}" class="btn btn-primary">Follow</a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+{% endblock %}

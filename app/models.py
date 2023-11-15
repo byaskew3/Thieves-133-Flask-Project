@@ -6,6 +6,12 @@ from werkzeug.security import generate_password_hash
 # create instance of database
 db = SQLAlchemy()
 
+follower_followed = db.Table(
+    'follower_followed',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id')),
+)
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String, nullable=False)
@@ -13,6 +19,13 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
+    following = db.relationship('User',
+                                secondary = follower_followed,
+                                primaryjoin = (follower_followed.columns.follower_id == id),
+                                secondaryjoin = (follower_followed.columns.followed_id == id),
+                                backref = 'followed_by',
+                                lazy = 'dynamic'
+                                )
 
     def __init__(self, first_name, last_name, email, password):
         self.first_name = first_name

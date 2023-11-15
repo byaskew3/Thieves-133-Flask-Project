@@ -1,6 +1,7 @@
 from app.blueprints.main import main
-from flask import render_template, request
-from flask_login import login_required
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_required, current_user
+from app.models import User, db
 import requests
 
 
@@ -44,3 +45,29 @@ def get_driver_data(data):
         }
         new_driver_data.append(driver_dict)
     return new_driver_data
+
+@main.route('/users')
+@login_required
+def users():
+    all_users = User.query.filter( User.id != current_user.id).all()
+    return render_template('users.html', all_users=all_users)
+
+@main.route('/follow/<int:user_id>')
+@login_required
+def follow(user_id):
+    user = User.query.get(user_id)
+    if user:
+        current_user.following.append(user)
+        db.session.commit()
+        flash(f"You are now following {user.first_name} {user.last_name}!", 'info')
+    return redirect(url_for('main.users'))
+
+@main.route('/unfollow/<int:user_id>')
+@login_required
+def unfollow(user_id):
+    user = User.query.get(user_id)
+    if user and user in current_user.following:
+        current_user.following.remove(user)
+        db.session.commit()
+        flash(f"You have unfollowed {user.first_name} {user.last_name}!", 'warning')
+    return redirect(url_for('main.users'))
