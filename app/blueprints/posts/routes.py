@@ -18,7 +18,7 @@ def create_post():
         # Create an instance of our Post Class
         post = Post(title, caption, img_url, user_id)
 
-        # add user to database
+        # add post to database
         db.session.add(post)
         db.session.commit()
 
